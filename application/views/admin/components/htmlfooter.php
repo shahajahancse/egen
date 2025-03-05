@@ -5,11 +5,11 @@
 <?php $theme = $this->Xin_model->read_theme_info(1);?>
 <?php $this->load->view('admin/components/vendors/del_dialog');?>
 <!-- jQuery 3 -->
-<script type="text/javascript" src="<?php echo base_url();?>skin/hrsale_assets/vendor/jquery/jquery-3.2.1.min.js"></script> 
+<script type="text/javascript" src="<?php echo base_url();?>skin/hrsale_assets/vendor/jquery/jquery-3.2.1.min.js"></script>
 <script src="<?php echo base_url();?>skin/hrsale_assets/theme_assets/bower_components/jquery/dist/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="<?php echo base_url();?>skin/hrsale_assets/theme_assets/bower_components/jquery-ui/jquery-ui.min.js"></script>
-  
+
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 <script>
   $.widget.bridge('uibutton', $.ui.button);
@@ -77,11 +77,11 @@ function escapeHtmlSecure(str)
 		'php': '&lt;',
 	};
 	return str.replace(/[<>]/g, function(m) {return map[m];});
-}	
+}
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
+
 	/*  Toggle Starts   */
 	//iCheck for checkbox and radio inputs
     $('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
@@ -135,7 +135,7 @@ $(document).ready(function(){
 <?php
 if (isset($progress)) {
 	echo "<script type='text/javascript'>
-	$(document).ready(function(){ 
+	$(document).ready(function(){
 		$('#range_grid').ionRangeSlider({
 			type: 'single',
 			min: 0,
@@ -181,7 +181,7 @@ $(document).ready(function(){
 					+'<option tax-type="<?php echo $_tax->type;?>" tax-rate="<?php echo $_tax->rate;?>" value="<?php echo $_tax->tax_id;?>"> <?php echo $_tax->name;?> (<?php echo $_tax_type;?>)</option>'
 					<?php } ?>
 				  	+'</select>'
-					+'</div>' 
+					+'</div>'
 					+'<div class="form-group mb-1 col-sm-12 col-md-1">'
 					+'<label for="tax_type"><?php echo $this->lang->line('xin_title_tax_rate');?></label>'
 					+'<br>'
@@ -210,7 +210,7 @@ $(document).ready(function(){
         $('#item-list').append(invoice_items).fadeIn(500);
 
     });
-});	
+});
 
 </script>
 <?php } ?>
@@ -220,7 +220,7 @@ $(document).ready(function(){
 $(document).ready(function(){
 	$('.print-invoice').click(function () {
 		$("#print_invoice_hr").printThis();
-	});	
+	});
 });
 </script>
 <?php } ?>
@@ -238,21 +238,24 @@ $(document).ready(function(){
 	<?php $this->load->view('admin/components/vendors/calendar_time');?>
 <?php }?>
 <?php if($this->router->fetch_class() =='calendar' || $this->router->fetch_class() =='dashboard'){?>
+
 	<?php if($user[0]->user_role_id==1): ?>
 		<?php $this->load->view('admin/components/vendors/full_calendar');?>
     <?php else:?>
     	<?php //$this->load->view('admin/components/vendors/half_calendar');?>
         <?php $this->load->view('admin/components/vendors/full_calendar');?>
     <?php endif; ?>
+
     <?php if($user[0]->user_role_id==1 && $this->router->fetch_class() =='dashboard'):?>
-    <script src="<?php echo base_url();?>skin/hrsale_assets/vendor/charts/chart.min.js" type="text/javascript"></script>    
-    <script src="<?php echo base_url();?>skin/hrsale_assets/hrsale_scripts/xchart/employee_department.js" type="text/javascript"></script>
-    <script src="<?php echo base_url();?>skin/hrsale_assets/hrsale_scripts/xchart/employee_designation.js" type="text/javascript"></script>
+    <script src="<?php echo base_url();?>skin/hrsale_assets/vendor/charts/chart.min.js" type="text/javascript"></script>
+    <!-- <script src="<?php echo base_url();?>skin/hrsale_assets/hrsale_scripts/xchart/employee_department.js" type="text/javascript"></script> -->
+    <!-- <script src="<?php echo base_url();?>skin/hrsale_assets/hrsale_scripts/xchart/employee_designation.js" type="text/javascript"></script> -->
     <?php endif; ?>
+
 <?php }?>
 <?php if($system[0]->module_chat_box=='true'){?>
 <?php if($this->router->fetch_class() =='chat'){?>
-<script>  
+<script>
   $('#chat-app, #chat-contact').slimScroll({
 	height: '420px'
   });
@@ -272,7 +275,7 @@ $(document).ready(function(){
 			  	jQuery('#msgs_count').html(data);
 			},
 			error: function() {
-			  
+
 			}
 		  });
 	}

@@ -1,229 +1,221 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.css">
-
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.min.js"></script>
+
 <?php
-
- $all_policies = $this->db->select('*')->from('xin_company_policy')->order_by('policy_id', 'DESC')->get()->result_array();
-
-$session = $this->session->userdata('username');
-
-$system = $this->Xin_model->read_setting_info(1);
-$company_info = $this->Xin_model->read_company_setting_info(1);
-$user = $this->Xin_model->read_employee_info($session['user_id']);
-$theme = $this->Xin_model->read_theme_info(1);
-
+    $all_policies = $this->db->select('*')->from('xin_company_policy')->order_by('policy_id', 'DESC')->get()->result_array();
+    $session = $this->session->userdata('username');
+    $system = $this->Xin_model->read_setting_info(1);
+    $company_info = $this->Xin_model->read_company_setting_info(1);
+    $user = $this->Xin_model->read_employee_info($session['user_id']);
+    $theme = $this->Xin_model->read_theme_info(1);
 ?>
 
 <?php $site_lang = $this->load->helper('language');?>
 <?php $wz_lang = $site_lang->session->userdata('site_lang');?>
 <?php
-if(!empty($wz_lang)):
-    $lang_code = $this->Xin_model->get_language_info($wz_lang);
-    $flg_icn = $lang_code[0]->language_flag;
-    $flg_icn = '<img src="'.base_url().'uploads/languages_flag/'.$flg_icn.'">';
-elseif($system[0]->default_language!=''):
-    $lang_code = $this->Xin_model->get_language_info($system[0]->default_language);
-    $flg_icn = $lang_code[0]->language_flag;
-    $flg_icn = '<img src="'.base_url().'uploads/languages_flag/'.$flg_icn.'">';
-else:
-    $flg_icn = '<img src="'.base_url().'uploads/languages_flag/gb.gif">';
-endif;
+    if(!empty($wz_lang)):
+        $lang_code = $this->Xin_model->get_language_info($wz_lang);
+        $flg_icn = $lang_code[0]->language_flag;
+        $flg_icn = '<img src="'.base_url().'uploads/languages_flag/'.$flg_icn.'">';
+    elseif($system[0]->default_language!=''):
+        $lang_code = $this->Xin_model->get_language_info($system[0]->default_language);
+        $flg_icn = $lang_code[0]->language_flag;
+        $flg_icn = '<img src="'.base_url().'uploads/languages_flag/'.$flg_icn.'">';
+    else:
+        $flg_icn = '<img src="'.base_url().'uploads/languages_flag/gb.gif">';
+    endif;
 ?>
 
 <?php
-  $role_user = $this->Xin_model->read_user_role_info($user[0]->user_role_id);
-if(!is_null($role_user)) {
-    $role_resources_ids = explode(',', $role_user[0]->role_resources);
-} else {
-    $role_resources_ids = explode(',', 0);
-}
-//$designation_info = $this->Xin_model->read_designation_info($user_info[0]->designation_id);
-// set color
-if($theme[0]->is_semi_dark==1):
-    $light_cls = 'navbar-semi-dark navbar-shadow';
-    $ext_clr = '';
-else:
-    $light_cls = 'navbar-dark';
-    $ext_clr = $theme[0]->top_nav_dark_color;
-endif;
-// set layout / fixed or static
-if($theme[0]->boxed_layout=='true') {
-    $lay_fixed = 'container boxed-layout';
-} else {
-    $lay_fixed = '';
-}
-if($theme[0]->animation_style == '') {
-    $animated = 'animated flipInY';
-} else {
-    $animated = 'animated '.$theme[0]->animation_style;
-}
+    $role_user = $this->Xin_model->read_user_role_info($user[0]->user_role_id);
+    if(!is_null($role_user)) {
+        $role_resources_ids = explode(',', $role_user[0]->role_resources);
+    } else {
+        $role_resources_ids = explode(',', 0);
+    }
+    //$designation_info = $this->Xin_model->read_designation_info($user_info[0]->designation_id);
+    // set color
+    if($theme[0]->is_semi_dark==1):
+        $light_cls = 'navbar-semi-dark navbar-shadow';
+        $ext_clr = '';
+    else:
+        $light_cls = 'navbar-dark';
+        $ext_clr = $theme[0]->top_nav_dark_color;
+    endif;
+    // set layout / fixed or static
+    if($theme[0]->boxed_layout=='true') {
+        $lay_fixed = 'container boxed-layout';
+    } else {
+        $lay_fixed = '';
+    }
+    if($theme[0]->animation_style == '') {
+        $animated = 'animated flipInY';
+    } else {
+        $animated = 'animated '.$theme[0]->animation_style;
+    }
 ?>
 
 <style type="text/css">
-.main-header .sidebar-toggle-hrsale-chat:before {
-    content: "\f0e6";
-}
+    .main-header .sidebar-toggle-hrsale-chat:before {
+        content: "\f0e6";
+    }
 
-.main-header .sidebar-toggle-hrsale-quicklinks:before {
-    content: "\f00a";
-}
+    .main-header .sidebar-toggle-hrsale-quicklinks:before {
+        content: "\f00a";
+    }
 </style>
 
 <style>
-.loaderss {
-    --c1: #673b14;
-    --c2: #0177bc;
-    width: 40px;
-    height: 80px;
-    border-top: 4px solid var(--c1);
-    border-bottom: 4px solid var(--c1);
-    background: linear-gradient(90deg, var(--c1) 2px, var(--c2) 0 5px, var(--c1) 0) 50%/7px 8px no-repeat;
-    display: grid;
-    overflow: hidden;
-    animation: l5-0 2s infinite linear;
-}
-
-.loaderss::before,
-.loaderss::after {
-    content: "";
-    grid-area: 1/1;
-    width: 75%;
-    height: calc(50% - 4px);
-    margin: 0 auto;
-    border: 2px solid var(--c1);
-    border-top: 0;
-    box-sizing: content-box;
-    border-radius: 0 0 40% 40%;
-    -webkit-mask: linear-gradient(#000 0 0) bottom/4px 2px no-repeat,
-        linear-gradient(#000 0 0);
-    -webkit-mask-composite: destination-out;
-    mask-composite: exclude;
-    background: linear-gradient(var(--d, 0deg), var(--c2) 50%, #0000 0) bottom /100% 205%,
-        linear-gradient(var(--c2) 0 0) center/0 100%;
-    background-repeat: no-repeat;
-    animation: inherit;
-    animation-name: l5-1;
-}
-
-.loaderss::after {
-    transform-origin: 50% calc(100% + 2px);
-    transform: scaleY(-1);
-    --s: 3px;
-    --d: 180deg;
-}
-
-@keyframes l5-0 {
-    80% {
-        transform: rotate(0)
+    .loaderss {
+        --c1: #673b14;
+        --c2: #0177bc;
+        width: 40px;
+        height: 80px;
+        border-top: 4px solid var(--c1);
+        border-bottom: 4px solid var(--c1);
+        background: linear-gradient(90deg, var(--c1) 2px, var(--c2) 0 5px, var(--c1) 0) 50%/7px 8px no-repeat;
+        display: grid;
+        overflow: hidden;
+        animation: l5-0 2s infinite linear;
     }
 
-    100% {
-        transform: rotate(0.5turn)
+    .loaderss::before,
+    .loaderss::after {
+        content: "";
+        grid-area: 1/1;
+        width: 75%;
+        height: calc(50% - 4px);
+        margin: 0 auto;
+        border: 2px solid var(--c1);
+        border-top: 0;
+        box-sizing: content-box;
+        border-radius: 0 0 40% 40%;
+        -webkit-mask: linear-gradient(#000 0 0) bottom/4px 2px no-repeat,
+            linear-gradient(#000 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+        background: linear-gradient(var(--d, 0deg), var(--c2) 50%, #0000 0) bottom /100% 205%,
+            linear-gradient(var(--c2) 0 0) center/0 100%;
+        background-repeat: no-repeat;
+        animation: inherit;
+        animation-name: l5-1;
     }
-}
 
-@keyframes l5-1 {
-
-    10%,
-    70% {
-        background-size: 100% 205%, var(--s, 0) 100%
+    .loaderss::after {
+        transform-origin: 50% calc(100% + 2px);
+        transform: scaleY(-1);
+        --s: 3px;
+        --d: 180deg;
     }
 
-    70%,
-    100% {
-        background-position: top, center
+    @keyframes l5-0 {
+        80% {
+            transform: rotate(0)
+        }
+
+        100% {
+            transform: rotate(0.5turn)
+        }
     }
-}
+
+    @keyframes l5-1 {
+        10%,
+        70% {
+            background-size: 100% 205%, var(--s, 0) 100%
+        }
+
+        70%,
+        100% {
+            background-position: top, center
+        }
+    }
 </style>
-<div id="inn_loader" style="display: block;position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 99999999999999999999900000000000000000000;background: #ffffffcf;">
-  <div style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
-    <img src="<?php echo base_url('innlode.gif') ?>" alt="">
-  </div>
-</div>
 
-
-
-
+<!-- <div id="inn_loader"
+    style="display: block;position: fixed;top: 0;left: 0;right: 0;bottom: 0;z-index: 99999999999999999999900000000000000000000;background: #ffffffcf;">
+    <div style="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -50%);">
+        <img src="<?php echo base_url('innlode.gif') ?>" alt="">
+    </div>
+</div> -->
 
 
 <style>
-marquee {
-    /*      font-size: 30px;*/
-    font-weight: 800;
-    color: #fff;
-    font-family: sans-serif;
-}
+    marquee {
+        /*      font-size: 30px;*/
+        font-weight: 800;
+        color: #fff;
+        font-family: sans-serif;
+    }
 
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 120px;
-    height: 34px;
-}
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 120px;
+        height: 34px;
+    }
 
-.switch input {
-    display: none;
-}
+    .switch input {
+        display: none;
+    }
 
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #3C3C3C;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 34px;
-}
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #3C3C3C;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 34px;
+    }
 
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-    border-radius: 50%;
-}
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 50%;
+    }
 
-input:checked+.slider {
-    background-color: #0E6EB8;
-}
+    input:checked+.slider {
+        background-color: #0E6EB8;
+    }
 
-input:focus+.slider {
-    box-shadow: 0 0 1px #2196F3;
-}
+    input:focus+.slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
 
-input:checked+.slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(85px);
-}
+    input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(85px);
+    }
 
-/*------ ADDED CSS ---------*/
-.slider:after {
-    content: 'Floor';
-    color: white;
-    display: block;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    font-size: 10px;
-    font-family: Verdana, sans-serif;
-}
+    /*------ ADDED CSS ---------*/
+    .slider:after {
+        content: 'Floor';
+        color: white;
+        display: block;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        font-size: 10px;
+        font-family: Verdana, sans-serif;
+    }
 
-input:checked+.slider:after {
-    content: 'Meeting';
-}
+    input:checked+.slider:after {
+        content: 'Meeting';
+    }
 
-/*--------- END --------*/
+    /*--------- END --------*/
 </style>
 
 <div id="myModal" class="modal fade" role="dialog">
@@ -318,32 +310,34 @@ input:checked+.slider:after {
         </div>
     </div>
 </div>
+
 <style>
-.boxm {
-    padding: 20px;
-    border: 2px solid #3F51B5;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-    background-color: #F5F5F5;
-    margin: 18px;
-}
+    .boxm {
+        padding: 20px;
+        border: 2px solid #3F51B5;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        background-color: #F5F5F5;
+        margin: 18px;
+    }
 
-p {
-    margin: 0;
-    font-size: 18px;
-    color: #333;
-}
+    p {
+        margin: 0;
+        font-size: 18px;
+        color: #333;
+    }
 
-#location {
-    font-weight: bold;
-    color: #3F51B5;
-}
+    #location {
+        font-weight: bold;
+        color: #3F51B5;
+    }
 
-#outtime,
-#outreason {
-    font-style: italic;
-}
+    #outtime,
+    #outreason {
+        font-style: italic;
+    }
 </style>
+
 <header class="main-header">
     <!-- Logo -->
     <a href="<?php echo site_url('admin/dashboard/');?>" class="logo">
@@ -363,39 +357,33 @@ p {
             title="<?php echo $this->lang->line('xin_sidebar_title');?>">
             <span class="sr-only">Toggle navigation</span>
         </a>
-        <?php if($system[0]->module_chat_box=='true') {?>
-        <a href="<?php echo site_url('admin/chat');?>" class="sidebar-toggle sidebar-toggle-hrsale-chat" role="button"
-            title="<?php echo $this->lang->line('xin_hr_chat_box');?>">
-            <?php $unread_msgs = $this->Xin_model->get_single_unread_message($session['user_id']);?>
-            <?php if($unread_msgs > 0) {?><span class="chat-badge label label-aqua"
-                id="msgs_count"><?php echo $unread_msgs;?></span><?php } ?>
-        </a>
-        <?php } ?>
+
         <style>
-        .notli {
-            padding: 1px;
-            margin: 10px;
-            border-radius: 11px;
-            box-shadow: 0px 0px 1px 3px #c3c3c3;
-        }
+            .notli {
+                padding: 1px;
+                margin: 10px;
+                border-radius: 11px;
+                box-shadow: 0px 0px 1px 3px #c3c3c3;
+            }
 
-        .menu::-webkit-scrollbar-track {
-            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-            background-color: #F5F5F5;
-        }
+            .menu::-webkit-scrollbar-track {
+                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+                border-radius: 10px;
+                background-color: #F5F5F5;
+            }
 
-        .menu::-webkit-scrollbar {
-            width: 7px;
-            background-color: #F5F5F5;
-        }
+            .menu::-webkit-scrollbar {
+                width: 7px;
+                background-color: #F5F5F5;
+            }
 
-        .menu::-webkit-scrollbar-thumb {
-            border-radius: 10px;
-            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
-            background-color: #555;
-        }
+            .menu::-webkit-scrollbar-thumb {
+                border-radius: 10px;
+                -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+                background-color: #555;
+            }
         </style>
+
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <li>
@@ -405,51 +393,34 @@ p {
                     </a>
                 </li>
 
-                <?php
-                $fcount = 0;
-                if(in_array($user[0]->user_role_id, array(1,2,4))) {
-                    $leaveapp = $this->Xin_model->get_notify_leave_applications();
-                    $start_date = date('Y-m-d', strtotime('-6 month', strtotime(date("Y-m-01"))));
-                    $end_date = date('Y-m-d', strtotime('+3 month', strtotime(date("Y-m-t"))));
-                    $incrementapp = $this->Xin_model->get_notify_incr_prob_applications($start_date, $end_date, 1);
-                    $probationapp = $this->Xin_model->get_notify_incr_prob_applications($start_date, $end_date, 5);
-                    $internapp = $this->Xin_model->get_notify_incr_prob_applications($start_date, $end_date, 4);
-                    $fcount = count($leaveapp) + count($incrementapp) + count($probationapp) + count($internapp);
-                    ?>
+                <?php $fcount = 0; ?>
 
-
-                <?php } elseif ($user[0]->user_role_id == 3) {
-                    $leaveapp = $this->Xin_model->get_notify_leave_applications_by_userid($user[0]->user_id);
-                    $incrementapp =[];
-                    $probationapp =[];
-                    $internapp=[];
-                    $fcount = count($leaveapp) + count($incrementapp) + count($probationapp);
-                }  ?>
                 <style>
-                .lir {
-                    cursor: pointer !important;
-                }
+                    .lir {
+                        cursor: pointer !important;
+                    }
 
-                .menu>li>a>.nrcolor {
-                    color: #ff0101 !important;
-                }
+                    .menu>li>a>.nrcolor {
+                        color: #ff0101 !important;
+                    }
 
-                .menu>li>a>.ngcolor {
-                    color: #037c29 !important;
-                }
+                    .menu>li>a>.ngcolor {
+                        color: #037c29 !important;
+                    }
 
-                .navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a {
-                    margin: 0;
-                    padding: 3px 1px;
-                }
+                    .navbar-nav>.messages-menu>.dropdown-menu>li .menu>li>a {
+                        margin: 0;
+                        padding: 3px 1px;
+                    }
 
-                .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
-                    position: absolute;
-                    right: 0;
-                    left: auto;
-                    box-shadow: 0px 0px 11px 4px #686868;
-                }
+                    .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
+                        position: absolute;
+                        right: 0;
+                        left: auto;
+                        box-shadow: 0px 0px 11px 4px #686868;
+                    }
                 </style>
+
                 <?php if (in_array($user[0]->user_role_id, array(1,2,3,4))) { ?>
                 <li class="dropdown messages-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true"
@@ -488,144 +459,13 @@ p {
                                 $statuss="First Stage Approval.";
                             } else {
                                 $statuss="--";
-                            }
-                                    ?>
-                                <li class="notli">
-                                    <!-- start message -->
-                                    <?php
-                                    $roolid=$session['role_id'];
-                                    if($roolid==3) {
-                                        ?>
-                                    <a onclick='modal_leave_data_ajax(<?php echo $row->leave_id ?>)'
-                                        data-target="#edit-leave-modal-data" data-toggle="modal"
-                                        style="cursor: pointer;" data-leave_id="<?php echo $row->leave_id ?>"
-                                        data-emname="<?php echo $emp_name ?>"
-                                        data-company_id="<?php echo $row->company_id ?>"
-                                        data-employee_id="<?php echo $row->employee_id ?>"
-                                        data-department_id="<?php echo $row->department_id ?>"
-                                        data-leave_type_id="<?php echo $row->leave_type_id ?>"
-                                        data-leave_type="<?php echo $row->leave_type ?>"
-                                        data-qty="<?php echo $row->qty ?>"
-                                        data-from_date="<?php echo $row->from_date ?>"
-                                        data-to_date="<?php echo $row->to_date ?>"
-                                        data-applied_on="<?php echo $row->applied_on ?>"
-                                        data-reason="<?php echo $row->reason ?>"
-                                        data-remarks="<?php echo $row->remarks ?>"
-                                        data-status="<?php echo $row->status ?>"
-                                        data-is_half_day="<?php echo $row->is_half_day ?>"
-                                        data-notify_leave="<?php echo $row->notify_leave ?>"
-                                        data-leave_attachment="<?php echo $row->leave_attachment ?>"
-                                        data-created_at="<?php echo $row->created_at ?>"
-                                        data-current_year="<?php echo $row->current_year ?>">
-                                        <?php
-                                    } else {
-                                        ?>
-                                        <a
-                                            href="<?php echo site_url('admin/timesheet/leave_details/id')?>/<?php echo $row->leave_id;?>/">
-                                            <?php } ?>
-                                            <div class="pull-left">
-                                                <?php  if($emp_info[0]->profile_picture!='' && $emp_info[0]->profile_picture!='no file') {?>
-                                                <img src="<?php  echo base_url().'uploads/profile/'.$emp_info[0]->profile_picture;?>"
-                                                    alt="" id="user_avatar" class="img-circle user_profile_avatar">
-                                                <?php } else {?>
-                                                <?php  if($emp_info[0]->gender=='Male') { ?>
-                                                <?php 	$de_file = base_url().'uploads/profile/default_male.jpg';?>
-                                                <?php } else { ?>
-                                                <?php 	$de_file = base_url().'uploads/profile/default_female.jpg';?>
-                                                <?php } ?>
-                                                <img src="<?php  echo $de_file;?>" alt="" id="user_avatar"
-                                                    class="img-circle user_profile_avatar">
-                                                <?php  } ?>
-                                            </div>
-                                            <h4> <?php echo $emp_name;?> </h4>
-                                            <p>applied for leave
-                                                <?php echo $this->Xin_model->set_date_format($row->applied_on);?></p>
-                                            <p><?= $statuss ?></p>
-                                        </a>
-                                </li>
+                            } ?>
+
                                 <?php } ?>
                             </ul>
                             <br>
                             <?php } ?>
-                            <?php if(count($incrementapp) > 0) {?>
-                            <ul class="menu">
-                                <div class="callout callout-hrsale" style="background: #0691d3; color: white;">
-                                    <p>Increment notifications <span
-                                            style="color: #d30505; padding: 4px; font-weight: bolder;"><?=count($incrementapp) ?>
-                                    </p>
-                                </div>
-                                <?php foreach($incrementapp as $row) {?>
-                                <?php
-                                        $ipdate = $row->notify_incre_prob;
-                                        $red_zone = date('Y-m-d', strtotime('-20 days', strtotime(date($ipdate))));
-                                    ?>
-                                <li class="lir notli">
-                                    <!-- start message -->
-                                    <a onclick="incrementFun(<?php echo $row->user_id; ?>)">
-                                        <div class="pull-left">
-                                            <?php  if($row->profile_picture!='' && $row->profile_picture!='no file') {?>
-                                            <img src="<?php  echo base_url('uploads/profile/'.$row->profile_picture);?>"
-                                                alt="" id="user_avatar" class="img-circle user_profile_avatar">
-                                            <?php } else {?>
-                                            <?php  if($row->gender=='Male') { ?>
-                                            <?php   $de_file = base_url().'uploads/profile/default_male.jpg';?>
-                                            <?php } else { ?>
-                                            <?php   $de_file = base_url().'uploads/profile/default_female.jpg';?>
-                                            <?php } ?>
-                                            <img src="<?php  echo $de_file;?>" alt="" id="user_avatar"
-                                                class="img-circle user_profile_avatar">
-                                            <?php  } ?>
-                                        </div>
-                                        <h4 class="<?php echo ($red_zone < date('Y-m-d')) ? 'nrcolor' : 'ngcolor' ?>">
-                                            <?php echo $row->first_name. ' '.$row->last_name;?> </h4>
-                                        <p class="<?php echo ($red_zone < date('Y-m-d')) ? 'nrcolor' : 'ngcolor' ?>">
-                                            Increment on <?php echo date("d-M-Y", strtotime($ipdate));?> </p>
-                                    </a>
-                                </li>
-                                <?php } ?>
 
-                                <?php
-                                $this->db->select('*');
-                                $this->db->from('xin_employees');
-                                $this->db->where('salary_review_is',1);
-                                $this->db->where('salary_review_date between "'.date('Y-m-d', strtotime('-1 month')).'" and "'.date('Y-m-d', strtotime('+2 month')).'"');
-                                $review_list= $this->db->get()->result();
-                                foreach( $review_list as $row){?>
-
-                                <li class="lir notli">
-                                    <!-- start message -->
-                                    <a onclick="salary_review_modal_a(<?php echo $row->user_id; ?>)">
-                                        <div class="pull-left">
-                                            <?php  if($row->profile_picture!='' && $row->profile_picture!='no file') {?>
-                                            <img src="<?php  echo base_url('uploads/profile/'.$row->profile_picture);?>"
-                                                alt="" id="user_avatar" class="img-circle user_profile_avatar">
-                                            <?php } else {?>
-                                            <?php  if($row->gender=='Male') { ?>
-                                            <?php   $de_file = base_url().'uploads/profile/default_male.jpg';?>
-                                            <?php } else { ?>
-                                            <?php   $de_file = base_url().'uploads/profile/default_female.jpg';?>
-                                            <?php } ?>
-                                            <img src="<?php  echo $de_file;?>" alt="" id="user_avatar"
-                                                class="img-circle user_profile_avatar">
-                                            <?php  } ?>
-                                        </div>
-                                        <h4 class="">
-                                            <?php echo $row->first_name. ' '.$row->last_name;?> </h4>
-                                        <p class="">
-                                            Review on <?php echo date("d-M-Y", strtotime($row->salary_review_date));?>
-                                        </p>
-                                    </a>
-                                </li>
-                                <?php }
-
-                                ?>
-
-
-
-
-                            </ul>
-                            <br>
-                            <?php } ?>
                             <?php if(count($internapp) > 0) {?>
                             <ul class="menu">
                                 <div class="callout callout-hrsale" style="background: #0691d3; color: white;">
@@ -709,99 +549,9 @@ p {
                 </li>
                 <!-- Tasks: style can be found in dropdown.less -->
                 <!-- User Account: style can be found in dropdown.less -->
-                <?php }  if($user[0]->user_role_id == 1) { ?>
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"
-                        title="<?php echo $this->lang->line('header_configuration');?>">
-                        <i class="fa fa-qrcode"></i>
-                    </a>
-                    <ul class="dropdown-menu <?php echo $animated;?>">
-                        <?php if($system[0]->module_recruitment=='true') {?>
-                        <?php if($system[0]->enable_job_application_candidates=='1') {?>
-                        <?php  if(in_array('50', $role_resources_ids)) { ?>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" target="_blank" href="<?php echo site_url('jobs');?>"><i
-                                    class="fa fa-newspaper-o"></i><?php echo $this->lang->line('left_jobs_listing');?>
-                            </a>
-                        </li>
-                        <?php  } ?>
-                        <?php  } ?>
-                        <?php  } ?>
-                        <?php  if($user[0]->user_role_id == 1) { ?>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="<?php echo site_url('admin/settings/constants');?>">
-                                <i class="fa fa-align-justify"></i><?php echo $this->lang->line('left_constants');?></a>
-                        </li>
-                        <?php } ?>
-                        <?php  if($user[0]->user_role_id == 1) { ?>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="<?php echo site_url('admin/custom_fields');?>"> <i
-                                    class="fa fa-sliders"></i><?php echo $this->lang->line('xin_hrsale_custom_fields');?></a>
-                        </li>
-                        <?php } ?>
-                        <?php  if($user[0]->user_role_id==1) { ?>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="<?php echo site_url('admin/roles');?>"> <i
-                                    class="fa fa-unlock-alt"></i><?php echo $this->lang->line('xin_role_urole');?></a>
-                        </li>
-                        <?php } ?>
-                        <?php  if(in_array('93', $role_resources_ids)) { ?>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="<?php echo site_url('admin/settings/modules');?>"> <i
-                                    class="fa fa-life-ring"></i><?php echo $this->lang->line('xin_setup_modules');?></a>
-                        </li>
-                        <?php } ?>
-                        <?php  if(in_array('63', $role_resources_ids)) { ?>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1"
-                                href="<?php echo site_url('admin/settings/email_template');?>"> <i
-                                    class="fa fa-envelope"></i><?php echo $this->lang->line('left_email_templates');?></a>
-                        </li>
-                        <?php } ?>
-                        <?php  if(in_array('92', $role_resources_ids)) { ?>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="<?php echo site_url('admin/employees/import');?>"> <i
-                                    class="fa fa-users"></i><?php echo $this->lang->line('xin_import_employees');?></a>
-                        </li>
-                        <?php } ?>
-                        <?php  if(in_array('62', $role_resources_ids)) { ?>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1"
-                                href="<?php echo site_url('admin/settings/database_backup');?>"> <i
-                                    class="fa fa-database"></i><?php echo $this->lang->line('header_db_log');?></a>
-                        </li>
-                        <?php } ?>
-                        <?php  if(in_array('94', $role_resources_ids)) { ?>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="<?php echo site_url('admin/theme');?>"> <i
-                                    class="fa fa-columns"></i><?php echo $this->lang->line('xin_theme_settings');?></a>
-                        </li>
-                        <?php } ?>
-                        <?php if(in_array('118', $role_resources_ids)) { ?>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1"
-                                href="<?php echo site_url('admin/settings/payment_gateway');?>"> <i
-                                    class="fa fa-cc-visa"></i><?php echo $this->lang->line('xin_acc_payment_gateway');?></a>
-                        </li>
-                        <?php } ?>
-                        <?php if($system[0]->module_orgchart=='true') {?>
-                        <?php if(in_array('96', $role_resources_ids)) { ?>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="<?php echo site_url('admin/organization/chart');?>">
-                                <i class="fa fa-sitemap"></i><?php echo $this->lang->line('xin_org_chart_title');?></a>
-                        </li>
-                        <?php } ?>
-                        <?php } ?>
-                        <?php if(in_array('60', $role_resources_ids)) { ?>
-                        <li class="divider"></li>
-                        <li role="presentation">
-                            <a role="menuitem" tabindex="-1" href="<?php echo site_url('admin/settings');?>"> <i
-                                    class="fa fa-cog text-aqua"></i><?php echo $this->lang->line('header_configuration');?></a>
-                        </li>
-                        <?php } ?>
-                    </ul>
-                </li>
-                <?php } ?>
+                <?php }  ?>
+
+                <!-- list -->
                 <?php if($user[0]->user_role_id == 1) {?>
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"
@@ -818,18 +568,16 @@ p {
                                 &nbsp; <?php echo $lang->language_name;?></a>
                         </li>
                         <?php endforeach;?>
-                        <?php if($system[0]->module_language=='true') {?>
-                        <?php  if(in_array('89', $role_resources_ids)) { ?>
                         <li class="divider"></li>
                         <li role="presentation">
                             <a role="menuitem" tabindex="-1" href="<?php echo site_url('admin/languages');?>"> <i
                                     class="fa fa-cog text-aqua"></i><?php echo $this->lang->line('left_settings');?></a>
                         </li>
-                        <?php } ?>
-                        <?php } ?>
                     </ul>
                 </li>
                 <?php } ?>
+
+                <!-- list -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="true"
                         title="<?php echo $this->lang->line('header_my_profile');?>">
@@ -870,52 +618,45 @@ p {
                     </ul>
                 </li>
                 <!-- Control Sidebar Toggle Button -->
-                <?php if ($user[0]->user_role_id == 1) {?>
-
-                <!-- <li>
-                    <a href="#" data-toggle="control-sidebar"
-                        title="<?php echo $this->lang->line('xin_role_layout_settings');?>"><i
-                            class="fa fa-cog fa-spin"></i></a>
-                </li> -->
-
-                <?php }
-                ?>
-
             </ul>
         </div>
     </nav>
 </header>
+
+
+
 <style>
-.myboxx {
-    display: flex;
-    padding: 0;
-    margin: 0;
-    border-radius: 5px;
-    box-shadow: 0px 0px 2px 2px #e5e5e5;
-    flex-direction: column;
-}
+    .myboxx {
+        display: flex;
+        padding: 0;
+        margin: 0;
+        border-radius: 5px;
+        box-shadow: 0px 0px 2px 2px #e5e5e5;
+        flex-direction: column;
+    }
 
-.myboxx_header {
-    background: #dddddd;
-    color: black;
-    font-size: 17px;
-    width: -webkit-fill-available;
-    border-bottom: 1px solid #979797;
-    text-align: center;
-}
+    .myboxx_header {
+        background: #dddddd;
+        color: black;
+        font-size: 17px;
+        width: -webkit-fill-available;
+        border-bottom: 1px solid #979797;
+        text-align: center;
+    }
 
-.myboxx_body {
-    color: black;
-    font-size: 15px;
-    padding: 5px;
-    width: -webkit-fill-available;
-}
+    .myboxx_body {
+        color: black;
+        font-size: 15px;
+        padding: 5px;
+        width: -webkit-fill-available;
+    }
 
-td,
-th {
-    padding: 0 !important;
-}
+    td,
+    th {
+        padding: 0 !important;
+    }
 </style>
+
 <div id="edit-leave-modal-data" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
 

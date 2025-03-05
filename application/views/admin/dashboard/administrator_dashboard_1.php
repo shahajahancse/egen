@@ -29,7 +29,7 @@ $theme = $this->Xin_model->read_theme_info(1);
  <h4><i class="icon fa fa-warning"></i> <?php echo $this->lang->line('xin_title_alert');?></h4>
  <?php echo $this->lang->line('xin_title_license');?> <?php echo $clicense->license_name;?> <?php echo $this->lang->line('xin_title_is_going_to_expire_soon');?></div>
  <?php endforeach;?>
- 
+
  <?php $company_license_exp = $this->Xin_model->company_license_expired();?>
  <?php foreach($company_license_exp as $clicense_exp):?>
  <div class="alert alert-warning alert-dismissible">
@@ -76,7 +76,7 @@ $theme = $this->Xin_model->read_theme_info(1);
             <i class="fa fa-lock"></i>
           </span>
           <div>
-            <h5 class="mb-1"><b> <span style="color: #00c0ef !important">Increment</span>, <span style="color: #31ce36!important;">Probation</span>  
+            <h5 class="mb-1"><b> <span style="color: #00c0ef !important">Increment</span>, <span style="color: #31ce36!important;">Probation</span>
              <span style="color: #6861ce !important">Promotion</span></b> &nbsp;&nbsp;
               <small class="text-muted">
                 <?php echo $this->lang->line('xin_performance_management'); ?>
@@ -136,7 +136,7 @@ $theme = $this->Xin_model->read_theme_info(1);
 <?php
 $current_month = date('Y-m-d');
 $working = $this->Xin_model->current_month_day_attendance($current_month);
-$total = $this->Employees_model->get_total_employees(); 
+$total = $this->Employees_model->get_total_employees();
 // absent
 $abs = $total - $working;
 ?>

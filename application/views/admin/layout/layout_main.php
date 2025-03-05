@@ -22,18 +22,11 @@
   } else {
   	$compact_sidebar = '';
   }
-  /*
-  if($this->router->fetch_class() =='chat'){
-  	$chat_app = 'chat-application';
-  } else {
-  	$chat_app = '';
-  }*/
-  
   $role_user = $this->Xin_model->read_user_role_info($user_info[0]->user_role_id);
   if(!is_null($role_user)){
   	$role_resources_ids = explode(',',$role_user[0]->role_resources);
   } else {
-  	$role_resources_ids = explode(',',0);	
+  	$role_resources_ids = explode(',',0);
   }
 ?>
 
@@ -43,11 +36,11 @@
   <div class="wrapper">
     <?php if($theme[0]->theme_option == 'template_1'):?>
       <?php $this->load->view('admin/components/header');?>
-    <?php elseif($theme[0]->theme_option == 'template_2'):?>  
-      <?php $this->load->view('admin/components/header_template2');?>  
+    <?php elseif($theme[0]->theme_option == 'template_2'):?>
+      <?php $this->load->view('admin/components/header_template2');?>
     <?php else:?>
     	<?php $this->load->view('admin/components/header');?>
-    <?php endif;?>  
+    <?php endif;?>
 
     <!-- Left side column. contains the logo and sidebar -->
     <aside class="main-sidebar">
@@ -55,7 +48,7 @@
       <!-- Links -->
   	  <?php if($theme[0]->theme_option == 'template_1'):?>
         <?php $this->load->view('admin/components/left_menu');?>
-      <?php elseif($theme[0]->theme_option == 'template_2'):?>  
+      <?php elseif($theme[0]->theme_option == 'template_2'):?>
         <?php $this->load->view('admin/components/left_menu_template2');?>
       <?php else:?>
       	<?php $this->load->view('admin/components/left_menu');?>
@@ -76,7 +69,7 @@
     	</div>
     </aside>
     <!-- Left side column. -->
-    
+
 
     <div class="content-wrapper">
       <?php if($this->router->fetch_class() =='dashboard' || $this->router->fetch_class() =='chat' || $this->router->fetch_class() =='1calendar' || $this->router->fetch_class() =='profile'){?>
@@ -135,7 +128,7 @@
       <!-- /.content-wrapper -->
 
       <?php $this->load->view('admin/components/footer');?>
-   
+
       <!-- Add the sidebar's background. This div must be placed
          immediately after the control sidebar -->
     <div class="control-sidebar-bg"></div>

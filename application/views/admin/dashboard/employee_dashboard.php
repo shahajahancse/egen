@@ -1,5 +1,5 @@
 
-<?php 
+<?php
     $session = $this->session->userdata('username');
     $get_animate = $this->Xin_model->get_content_animate();
     $userid  = $session[ 'user_id' ];
@@ -21,7 +21,7 @@
     $taken_meal = 0;
     $paymeal = 0;
     $balanceMeal = 0;
-    
+
     if (!empty($data1)) {
         $this->load->model("Lunch_model");
         $emp_data = $this->Lunch_model->get_data_date_wise($data1->end_date, $data1->next_date, $data1->emp_id);
@@ -79,7 +79,7 @@
                           ->where('attendance_date', date('Y-m-d'))
                           ->get('xin_attendance_time')
                           ->row();
-    // dd($punch_time);                      
+    // dd($punch_time);
     if (!empty($punch_time)) {
         $in_time = date('h.i A', strtotime($punch_time->clock_in));
         $out_time = date('h.i A', strtotime($punch_time->clock_out));
@@ -593,7 +593,7 @@ hr {
                 <div class="card-body">
                     <div style="display:flex">
                         <h5>Salary Statistics</h5>
-                       
+
                         <!-- <h5 style="margin-right:0; margin-left: auto;">Yearly 1234M</h5> -->
                     </div>
                     <div id="my_div">
